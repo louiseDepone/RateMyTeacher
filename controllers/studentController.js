@@ -113,8 +113,12 @@ const studentController = {
             );
             if (isPasswordCorrect) {
               const token = jsonwebtoken.sign(
-                { id: result[0].student_id, role: result[0].role },
+                { id: result[0].student_id, 
+                  role: result[0].role ,
+                  name: result[0].name,
+                  email: result[0].email},
                 process.env.JWT_SECRET
+                
               );
               res.status(200).json({ message: "Login Successful", token });
             } else {

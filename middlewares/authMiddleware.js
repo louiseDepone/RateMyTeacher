@@ -11,6 +11,7 @@ function authenticateToken(req, res, next) {
     
     jsonwebtoken.verify(token,process.env.SECRETKEY,(err, user) => {
         if (err) {
+            console.log(err)
             return res.status(403).json({ error: 'forbidden' });
         }
         req.user = user;
