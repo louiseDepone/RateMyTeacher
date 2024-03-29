@@ -3,17 +3,17 @@ const { db } = require("../configs/database");
 const { jsonwebtoken } = require("../middlewares/authMiddleware");
 const { decoding } = require("../services/jwt");
 
-// teacher_Subjects:
+// teacher_subjects:
 
 // teacher_subject_id (INT, Primary Key, Auto Increment)
 // teacher_id (INT, Foreign Key referencing teacher_id in Teachers table)
-// subject_id (INT, Foreign Key referencing subject_id in Subjects table)
+// subject_id (INT, Foreign Key referencing subject_id in subjects table)
 
 const teacherSubjectController = {
   Get: {
     singleTeacherSubject(req, res) {
       const { id } = req.params;
-      const query = `SELECT * FROM teacher_Subjects WHERE teacher_subject_id = ? AND deleted = 0;`;
+      const query = `SELECT * FROM teacher_subjects WHERE teacher_subject_id = ? AND deleted = 0;`;
       db.query(query, [id], (err, result) => {
         if (err) {
           return res.status(500).json({
@@ -41,12 +41,12 @@ const teacherSubjectController = {
   subjects.subject AS subject
 FROM
   enrollments
-  INNER JOIN Students ON enrollments.student_id = Students.student_id
-  INNER JOIN teacher_Subjects ON enrollments.teacher_subject_id = teacher_Subjects.teacher_subject_id
-  INNER JOIN teachers ON teacher_Subjects.teacher_id = teachers.teacher_id
-  INNER JOIN subjects ON teacher_Subjects.subject_id = subjects.subject_id
+  INNER JOIN students ON enrollments.student_id = students.student_id
+  INNER JOIN teacher_subjects ON enrollments.teacher_subject_id = teacher_subjects.teacher_subject_id
+  INNER JOIN teachers ON teacher_subjects.teacher_id = teachers.teacher_id
+  INNER JOIN subjects ON teacher_subjects.subject_id = subjects.subject_id
 WHERE
-  enrollments.deleted = 0 AND Students.student_id = ?`;
+  enrollments.deleted = 0 AND students.student_id = ?`;
       db.query(query, [id], (err, result) => {
         if (err) {
           console.log(err);
@@ -60,7 +60,7 @@ WHERE
     },
 
     multipleTeacherSubject(req, res) {
-      const query = `SELECT * FROM teacher_Subjects WHERE deleted = 0;`;
+      const query = `SELECT * FROM teacher_subjects WHERE deleted = 0;`;
       db.query(query, (err, result) => {
         if (err) {
           return res.status(500).json({
@@ -81,7 +81,7 @@ WHERE
     async singleTeacherSubject(req, res) {
       const { teacher_subject_id } = req.params;
       const { teacher_id, subject_id } = req.body;
-      const query = `UPDATE teacher_Subjects SET teacher_id = ?, subject_id = ? WHERE teacher_subject_id = ? AND deleted = 0;`;
+      const query = `UPDATE teacher_subjects SET teacher_id = ?, subject_id = ? WHERE teacher_subject_id = ? AND deleted = 0;`;
       db.query(
         query,
         [teacher_id, subject_id, teacher_subject_id],
@@ -106,7 +106,7 @@ WHERE
     async multipleTeacherSubject(req, res) {
       const { teacher_subject_id } = req.params;
       const { teacher_id, subject_id } = req.body;
-      const query = `UPDATE teacher_Subjects SET teacher_id = ?, subject_id = ? WHERE deleted = 0;`;
+      const query = `UPDATE teacher_subjects SET teacher_id = ?, subject_id = ? WHERE deleted = 0;`;
       db.query(
         query,
         [teacher_id, subject_id, teacher_subject_id],
@@ -132,7 +132,7 @@ WHERE
   Post: {
     async singleTeacherSubject(req, res) {
       const { teacher_id, subject_id } = req.body;
-      const query = `INSERT INTO teacher_Subjects (teacher_id, subject_id) VALUES (?, ?);`;
+      const query = `INSERT INTO teacher_subjects (teacher_id, subject_id) VALUES (?, ?);`;
       db.query(query, [teacher_id, subject_id], (err, result) => {
         if (err) {
           return res.status(500).json({
@@ -147,7 +147,7 @@ WHERE
 
     async multipleTeacherSubject(req, res) {
       const { teacher_id, subject_id } = req.body;
-      const query = `INSERT INTO teacher_Subjects (teacher_id, subject_id) VALUES (?, ?);`;
+      const query = `INSERT INTO teacher_subjects (teacher_id, subject_id) VALUES (?, ?);`;
       db.query(query, [teacher_id, subject_id], (err, result) => {
         if (err) {
           return res.status(500).json({
@@ -163,7 +163,7 @@ WHERE
   Delete: {
     async singleTeacherSubject(req, res) {
       const { teacher_subject_id } = req.params;
-      const query = `UPDATE teacher_Subjects SET deleted = 1 WHERE teacher_subject_id = ?;`;
+      const query = `UPDATE teacher_subjects SET deleted = 1 WHERE teacher_subject_id = ?;`;
       db.query(query, [teacher_subject_id], (err, result) => {
         if (err) {
           return res.status(500).json({
