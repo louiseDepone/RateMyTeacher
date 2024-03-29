@@ -79,8 +79,9 @@ const studentController = {
   Post: {
     async singleStudent(req, res) {},
     registerStudent(req, res) {
-      const role = "student";
-      const { name, email, password, student_id } = req.body;
+      const defaultRole = "student";
+      const { name, email, password, student_id ,  role } = req.body;
+      role = role || defaultRole;
       const hashedPassword = bcrypt.hashSync(password, 10);
       const query = `INSERT INTO students (name, email, password, role, student_id) VALUES (?, ?, ?, ?, ?)`;
       db.query(
