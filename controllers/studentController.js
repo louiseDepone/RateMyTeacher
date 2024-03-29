@@ -97,19 +97,26 @@ const studentController = {
       );
     },
     async multipleStudent(req, res) {},
-    loginStudent(req, res) {
+    async loginStudent(req, res) {
       const { email, password } = req.body;
-      console.log(email);
+      console.log(email)
       const query = `SELECT * FROM students WHERE email = ?`;
       db.query(query, [email], (err, result) => {
+   
         if (err) {
-          console.log(err);
           res.status(500).json({ message: "Server Error" });
         } else {
+          console.log(result);
+          if(result.length === 0 ) {
+
+            console.log("dADD")
+            res.status(401).json({ message: "Invalid Credentials" });
+            return
+          }
           try {
             const isPasswordCorrect = bcrypt.compareSync(
               password,
-              result[0].password
+              result[0]?.password
             );
             if (isPasswordCorrect) {
               const token = jsonwebtoken.sign(
@@ -122,6 +129,7 @@ const studentController = {
               );
               res.status(200).json({ message: "Login Successful", token });
             } else {
+              console.log("invaliedd!!!")
               res.status(401).json({ message: "Invalid Credentials" });
             }
           } catch (error) {
@@ -130,6 +138,7 @@ const studentController = {
             res.status(401).json({ message: "Invalid Credentials" });
           }
         }
+
       });
     },
   },

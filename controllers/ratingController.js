@@ -53,7 +53,7 @@ const ratingController = {
     },
     singleStudentRating(req, res) {
       const { id } = req.params;
-      const query =`
+      const query = `
         SELECT
   Ratings.rating_id,
   Students.name AS studentName,
@@ -67,8 +67,9 @@ const ratingController = {
   Ratings.supportiveness,
   Ratings.engagement,
   Ratings.likes,
-  Ratings.dislikes,
-  Ratings.date 
+  Ratings.date,
+        Ratings.approved,
+        Ratings.deleted
 FROM
   Ratings
   INNER JOIN Students ON Ratings.student_id = Students.student_id
@@ -76,7 +77,9 @@ FROM
   INNER JOIN Teachers ON Teacher_Subjects.teacher_id = Teachers.teacher_id
   INNER JOIN Subjects ON Teacher_Subjects.subject_id = Subjects.subject_id
 WHERE
-  Students.student_id = ?`;
+  Students.student_id = ?
+  
+  order by Ratings.rating_id desc`;
         db.query(query, [id], (err, result) => {
           if (err) {
             console.error(err);
@@ -116,13 +119,20 @@ WHERE
         Ratings.engagement,
         Ratings.likes,
         Ratings.dislikes,
-        Ratings.date
+        Ratings.date,
+        Ratings.approved,
+        Ratings.deleted
+
       FROM
         Ratings
         INNER JOIN Students ON Ratings.student_id = Students.student_id
         INNER JOIN Teacher_Subjects ON Ratings.teacher_subject_id = Teacher_Subjects.teacher_subject_id
         INNER JOIN Teachers ON Teacher_Subjects.teacher_id = Teachers.teacher_id
-        INNER JOIN Subjects ON Teacher_Subjects.subject_id = Subjects.subject_id;`,
+        INNER JOIN Subjects ON Teacher_Subjects.subject_id = Subjects.subject_id
+        
+      Where Ratings.deleted = 0 AND Ratings.approved = 1
+        order by Ratings.rating_id desc
+        ;`,
         (err, result) => {
           if (err) {
             console.error(err);
@@ -130,6 +140,7 @@ WHERE
               .status(500)
               .json({ error: "An error occurred while fetching the ratings" });
           } else {
+            console.log(result);
             res.status(200).json(result);
           }
         }
@@ -248,10 +259,12 @@ WHERE
 
   Delete: {
     async singleRating(req, res) {
-      const ratingId = req.params.ratingId;
+      const ratingId = req.params.id;
+      const { deleted } = req.body;
+      console.log(deleted, ratingId);
       db.query(
-        "UPDATE Ratings SET deleted = true WHERE rating_id = ?",
-        [ratingId],
+        "UPDATE Ratings SET deleted = ? WHERE rating_id = ?",
+        [deleted,ratingId],
         (err, result) => {
           if (err) {
             console.error(err);
@@ -260,8 +273,10 @@ WHERE
               .json({ error: "An error occurred while deleting the rating" });
           } else {
             if (result.affectedRows > 0) {
+                            console.log(result);
               res.status(200).json(result);
             } else {
+              console.log(result);
               res.status(404).json({ error: "Rating not found" });
             }
           }

@@ -7,10 +7,12 @@ const express = require("express");
 
 const app = express();
 const PORT = process.env.PORT;
+const HOST = process.env.HOST;
 
-
-
-
+app.get("/", (req, res) => {
+  console.log("sad")
+ res.send("Hello World");
+})
 const enrollmentRoute = require("./routes/enrollmentRoute");
 const ratingRoute = require("./routes/ratingRoute");
 const studentRatingRoute = require("./routes/studentRatingRoute");
@@ -26,28 +28,8 @@ app.use(bodyParser.json());
 
 app.use("/", enrollmentRoute, ratingRoute, studentRatingRoute, studentRoute, subjectRoute, teacherRoute, teacherSubjectRoute);
 
-app.get("/", (req, res) => {
-            try {
-              db.query(
-                "SELECT * FROM Students ;",
-                (err, result) => {
-                  if (err) {
-                    console.error("erroe fetching items:", err);
-                    res.status(500).json({ message: "Internal server error" });
-                  } else {
-                    res.status(200).json(result);
-                  }
-                }
-              );
-            } catch (error) {
-              console.error("Error loading students:", error);
-              res.status(500).json({ error: "interrnal server error" });
-            }
-});
 
-
- 
 
 app.listen(PORT, () => {
-  console.log(`Server Address: http://localhost:${PORT}`);
+  console.log(`Server Address: http://${HOST}:${PORT}`);
 });
