@@ -37,14 +37,14 @@ const teacherSubjectController = {
   enrollments.enrollment_id,
   enrollments.student_id,
   enrollments.teacher_subject_id,
-  Teachers.name AS teacher,
-  Subjects.subject AS subject
+  teachers.name AS teacher,
+  subjects.subject AS subject
 FROM
   enrollments
   INNER JOIN Students ON enrollments.student_id = Students.student_id
   INNER JOIN teacher_Subjects ON enrollments.teacher_subject_id = teacher_Subjects.teacher_subject_id
-  INNER JOIN Teachers ON teacher_Subjects.teacher_id = Teachers.teacher_id
-  INNER JOIN Subjects ON teacher_Subjects.subject_id = Subjects.subject_id
+  INNER JOIN teachers ON teacher_Subjects.teacher_id = teachers.teacher_id
+  INNER JOIN subjects ON teacher_Subjects.subject_id = subjects.subject_id
 WHERE
   enrollments.deleted = 0 AND Students.student_id = ?`;
       db.query(query, [id], (err, result) => {

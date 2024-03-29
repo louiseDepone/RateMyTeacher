@@ -13,8 +13,8 @@ const { decoding } = require("../services/jwt");
 // --   date DATE,
 // --   approved BOOLEAN DEFAULT FALSE,
 // --   deleted BOOLEAN DEFAULT FALSE,
-// --   FOREIGN KEY (student_id) REFERENCES Students(student_id),
-// --   FOREIGN KEY (teacher_subject_id) REFERENCES Teacher_Subjects(teacher_subject_id)
+// --   FOREIGN KEY (student_id) REFERENCES students(student_id),
+// --   FOREIGN KEY (teacher_subject_id) REFERENCES teacher_subjects(teacher_subject_id)
 // -- );
 // -- ALTER TABLE ratings
 // -- DROP COLUMN rating_value,
@@ -56,9 +56,9 @@ const ratingController = {
       const query = `
         SELECT
   ratings.rating_id,
-  Students.name AS studentName,
-  Teachers.name AS teacherName,
-  Subjects.subject AS subjectName,
+  students.name AS studentName,
+  teachers.name AS teacherName,
+  subjects.subject AS subjectName,
   ratings.comment,
   ratings.teaching_method,
   ratings.attitude,
@@ -72,12 +72,12 @@ const ratingController = {
         ratings.deleted
 FROM
   ratings
-  INNER JOIN Students ON ratings.student_id = Students.student_id
-  INNER JOIN Teacher_Subjects ON ratings.teacher_subject_id = Teacher_Subjects.teacher_subject_id
-  INNER JOIN Teachers ON Teacher_Subjects.teacher_id = Teachers.teacher_id
-  INNER JOIN Subjects ON Teacher_Subjects.subject_id = Subjects.subject_id
+  INNER JOIN students ON ratings.student_id = students.student_id
+  INNER JOIN teacher_subjects ON ratings.teacher_subject_id = teacher_subjects.teacher_subject_id
+  INNER JOIN teachers ON teacher_subjects.teacher_id = teachers.teacher_id
+  INNER JOIN subjects ON teacher_subjects.subject_id = subjects.subject_id
 WHERE
-  Students.student_id = ?
+  students.student_id = ?
   
   order by ratings.rating_id desc`;
         db.query(query, [id], (err, result) => {
@@ -107,9 +107,9 @@ WHERE
       db.query(
         `SELECT
         ratings.rating_id,
-        Students.name AS studentName,
-        Teachers.name AS teacherName,
-        Subjects.subject AS subjectName,
+        students.name AS studentName,
+        teachers.name AS teacherName,
+        subjects.subject AS subjectName,
         ratings.comment,
         ratings.teaching_method,
         ratings.attitude,
@@ -125,10 +125,10 @@ WHERE
 
       FROM
         ratings
-        INNER JOIN Students ON ratings.student_id = Students.student_id
-        INNER JOIN Teacher_Subjects ON ratings.teacher_subject_id = Teacher_Subjects.teacher_subject_id
-        INNER JOIN Teachers ON Teacher_Subjects.teacher_id = Teachers.teacher_id
-        INNER JOIN Subjects ON Teacher_Subjects.subject_id = Subjects.subject_id
+        INNER JOIN students ON ratings.student_id = students.student_id
+        INNER JOIN teacher_subjects ON ratings.teacher_subject_id = teacher_subjects.teacher_subject_id
+        INNER JOIN teachers ON teacher_subjects.teacher_id = teachers.teacher_id
+        INNER JOIN subjects ON teacher_subjects.subject_id = subjects.subject_id
         
       Where ratings.deleted = 0 AND ratings.approved = 1
         order by ratings.rating_id desc
