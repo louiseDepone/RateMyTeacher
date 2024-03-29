@@ -10,7 +10,7 @@ const PORT = process.env.PORT;
 const HOST = process.env.HOST;
 
 app.get("/", (req, res) => {
-  console.log("sad")
+  console.log("Okay this is the veyr root and onlyfor testing")
  res.send("Hello World");
 })
 const enrollmentRoute = require("./routes/enrollmentRoute");
