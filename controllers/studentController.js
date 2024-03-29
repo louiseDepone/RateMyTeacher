@@ -127,6 +127,7 @@ const studentController = {
                 process.env.JWT_SECRET
                 
               );
+              console.log("Login Successful")
               res.status(200).json({ message: "Login Successful", token });
             } else {
               console.log("invaliedd!!!")
