@@ -11,7 +11,7 @@ function authenticateToken(req, res, next) {
     }
     
     jsonwebtoken.verify(token,process.env.SECRETKEY,(err, user) => {
-        console.log("fibiden token!", token);
+       
         if (err) {
             console.log(err)
             console.log("forbidden token!");

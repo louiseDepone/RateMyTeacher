@@ -5,6 +5,7 @@ const { authenticateToken } = require("../middlewares/authMiddleware");
 const teacherSubjectController = require("../controllers/teacherSubjectController");
 router.get("/teacherSubjects", authenticateToken, teacherSubjectController.Get.multipleTeacherSubject);
 router.get("/teacherSubjects/:id", authenticateToken, teacherSubjectController.Get.singleTeacherSubject);
+router.get("/studentteackingcourses",authenticateToken,teacherSubjectController.Get.emrolledsubjects);
 router.get(
   "/teacherSubjects/user/:id",
   authenticateToken,

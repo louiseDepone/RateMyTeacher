@@ -54,22 +54,53 @@ WHERE
             message: "Internal Server Error",
           });
         }
-        res.status(200).json(result);}
-
-      );
+        res.status(200).json(result);
+      });
     },
 
     multipleTeacherSubject(req, res) {
-      const query = `SELECT * FROM teacher_subjects WHERE deleted = 0;`;
+      const query = `
+SELECT ts.teacher_subject_id, 
+t.name AS teacher_name, 
+s.subject as subject,
+t.teacher_id AS teacher_id, 
+s.subject_id as subject_id
+FROM teacher_subjects ts
+JOIN teachers t ON ts.teacher_id = t.teacher_id
+JOIN subjects s ON ts.subject_id = s.subject_id`;
       db.query(query, (err, result) => {
         if (err) {
+          console.log(err);
           return res.status(500).json({
             message: "Internal Server Error",
           });
         }
-        if (result.length === 0) {
-          return res.status(404).json({
-            message: "Teacher_Subject not found",
+        res.status(200).json(result);
+      });
+    },
+    emrolledsubjects(req, res) {
+      console.log("YOU HSOULD ENTER HERE!")
+            const query = `SELECT
+         enrollments.deleted,
+        enrollments.enrollment_id,
+        enrollments.student_id,
+        enrollments.teacher_subject_id,
+        teachers.name AS teacher,
+        students.name as student,
+        subjects.subject AS subject,
+        teachers.teacher_id AS teacher_id,
+        subjects.subject_id AS subject_id
+      FROM
+        enrollments
+        INNER JOIN students ON enrollments.student_id = students.student_id
+        INNER JOIN teacher_subjects ON enrollments.teacher_subject_id = teacher_subjects.teacher_subject_id
+        INNER JOIN teachers ON teacher_subjects.teacher_id = teachers.teacher_id
+        INNER JOIN subjects ON teacher_subjects.subject_id = subjects.subject_id`;
+      db.query(query, (err, result) => {
+        if (err) {
+          console.log(err);
+          return res.status(500).json({
+            message: "Internal Server Error",
           });
         }
         res.status(200).json(result);

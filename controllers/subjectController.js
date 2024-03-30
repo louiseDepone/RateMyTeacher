@@ -3,7 +3,7 @@ const { db } = require("../configs/database");
 const { jsonwebtoken } = require("../middlewares/authMiddleware");
 const { decoding } = require("../services/jwt");
 
-// Subjects:
+// subjects:
 
 // subject_id (INT, Primary Key)
 // subject (VARCHAR(50))
