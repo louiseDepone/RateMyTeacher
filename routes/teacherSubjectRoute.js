@@ -13,6 +13,6 @@ router.get(
 );
 router.post("/teacherSubjects", authenticateToken, teacherSubjectController.Post.singleTeacherSubject);
 router.put("/teacherSubjects/:id", authenticateToken, teacherSubjectController.Put.singleTeacherSubject);
-router.delete("/teacherSubjects/:id", authenticateToken, teacherSubjectController.Delete.singleTeacherSubject);
+router.put("/teacherSubjectsDelete/:id", authenticateToken, teacherSubjectController.Delete.singleTeacherSubject);
 
 module.exports = router;

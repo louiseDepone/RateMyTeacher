@@ -15,6 +15,6 @@ router.get(
 
 router.post("/ratings", authenticateToken, ratingController.Post.singleRating);
 router.put("/ratings/:id", authenticateToken, ratingController.Put.singleRating);
-router.delete("/ratings/:id", authenticateToken, ratingController.Delete.singleRating);
+router.put("/tohiderating/:id", authenticateToken, ratingController.Delete.singleRating);
 
 module.exports = router;

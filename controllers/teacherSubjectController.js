@@ -30,7 +30,6 @@ const teacherSubjectController = {
     },
     singleUserTeacherSubject(req, res) {
       const { id } = req.params;
-      console.log(id);
       const query = `
    SELECT 
    enrollments.deleted,
@@ -46,7 +45,7 @@ FROM
   INNER JOIN teachers ON teacher_subjects.teacher_id = teachers.teacher_id
   INNER JOIN subjects ON teacher_subjects.subject_id = subjects.subject_id
 WHERE
-  enrollments.deleted = 0 AND students.student_id = ?`;
+  students.student_id = ?`;
       db.query(query, [id], (err, result) => {
         if (err) {
           console.log(err);
@@ -62,6 +61,7 @@ WHERE
       const query = `
 SELECT ts.teacher_subject_id, 
 t.name AS teacher_name, 
+ts.deleted,
 s.subject as subject,
 t.teacher_id AS teacher_id, 
 s.subject_id as subject_id
@@ -79,7 +79,6 @@ JOIN subjects s ON ts.subject_id = s.subject_id`;
       });
     },
     emrolledsubjects(req, res) {
-      console.log("YOU HSOULD ENTER HERE!")
             const query = `SELECT
          enrollments.deleted,
         enrollments.enrollment_id,
@@ -112,7 +111,7 @@ JOIN subjects s ON ts.subject_id = s.subject_id`;
     async singleTeacherSubject(req, res) {
       const { teacher_subject_id } = req.params;
       const { teacher_id, subject_id } = req.body;
-      const query = `UPDATE teacher_subjects SET teacher_id = ?, subject_id = ? WHERE teacher_subject_id = ? AND deleted = 0;`;
+      const query = `UPDATE teacher_subjects SET teacher_id = ?, subject_id = ? WHERE teacher_subject_id = ? ;`;
       db.query(
         query,
         [teacher_id, subject_id, teacher_subject_id],
@@ -137,7 +136,7 @@ JOIN subjects s ON ts.subject_id = s.subject_id`;
     async multipleTeacherSubject(req, res) {
       const { teacher_subject_id } = req.params;
       const { teacher_id, subject_id } = req.body;
-      const query = `UPDATE teacher_subjects SET teacher_id = ?, subject_id = ? WHERE deleted = 0;`;
+      const query = `UPDATE teacher_subjects SET teacher_id = ?, subject_id = ?;`;
       db.query(
         query,
         [teacher_id, subject_id, teacher_subject_id],
@@ -193,23 +192,39 @@ JOIN subjects s ON ts.subject_id = s.subject_id`;
   },
   Delete: {
     async singleTeacherSubject(req, res) {
-      const { teacher_subject_id } = req.params;
-      const query = `UPDATE teacher_subjects SET deleted = 1 WHERE teacher_subject_id = ?;`;
-      db.query(query, [teacher_subject_id], (err, result) => {
-        if (err) {
-          return res.status(500).json({
-            message: "Internal Server Error",
-          });
-        }
-        if (result.affectedRows === 0) {
-          return res.status(404).json({
-            message: "Teacher_Subject not found",
-          });
-        }
-        res.status(200).json({
-          message: "Teacher_Subject deleted successfully",
+      const { id } = req.params;
+      const {isDeleted} = req.body;
+      const query = `UPDATE teacher_subjects SET deleted = ? WHERE teacher_subject_id = ?;`;
+      try {
+        
+        db.query(query, [isDeleted,id], (err, result) => {
+          if (err) {
+            return res.status(500).json({
+              message: "Internal Server Error",
+            });
+          }
+          if (result.affectedRows === 0) {
+            return res.status(404).json({
+              message: "Teacher_Subject not found",
+            });
+          }
         });
-      });
+
+        const anotherQuery = "UPDATE enrollments SET deleted = ? WHERE teacher_subject_id = ?;"
+      
+          db.query(anotherQuery, [isDeleted,id], (err, result) => {
+            if (err) {
+              return res.status(500).json({
+                message: "Internal Server Error",
+              });
+            }
+          });
+          
+        res.status(200).json({message: "good"})
+        
+      } catch (error) {
+        console.log(error)
+      }
     },
 
     async multipleTeacherSubject(req, res) {},

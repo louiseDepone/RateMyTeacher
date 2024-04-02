@@ -80,17 +80,16 @@ WHERE
   students.student_id = ?
   
   order by ratings.rating_id desc`;
-        db.query(query, [id], (err, result) => {
-          if (err) {
-            console.error(err);
-            res
-              .status(500)
-              .json({ error: "An error occurred while fetching the rating" });
-          } else {
-            res.status(200).json(result);
-          }
+      db.query(query, [id], (err, result) => {
+        if (err) {
+          console.error(err);
+          res
+            .status(500)
+            .json({ error: "An error occurred while fetching the rating" });
+        } else {
+          res.status(200).json(result);
         }
-      );
+      });
     },
 
     // multipleRating(req, res) {
@@ -107,6 +106,7 @@ WHERE
       db.query(
         `SELECT
         ratings.rating_id,
+        ratings.student_id,
         students.name AS studentName,
         teachers.name AS teacherName,
         subjects.subject AS subjectName,
@@ -129,8 +129,6 @@ WHERE
         INNER JOIN teacher_subjects ON ratings.teacher_subject_id = teacher_subjects.teacher_subject_id
         INNER JOIN teachers ON teacher_subjects.teacher_id = teachers.teacher_id
         INNER JOIN subjects ON teacher_subjects.subject_id = subjects.subject_id
-        
-      Where ratings.deleted = 0 AND ratings.approved = 1
         order by ratings.rating_id desc
         ;`,
         (err, result) => {
@@ -208,25 +206,11 @@ WHERE
         comment,
       } = req.body.data;
 
-        const date = new Date();
-        const formattedDate = date.toISOString().split('T')[0];
-      console.log(
-        student_id,
-        teacher_subject_id,
-        teaching_method,
-        attitude,
-        communication,
-        organization,
-        supportiveness,
-        engagement,
-        likes,
-        dislikes,
-        comment,
-        date
-      );
+      const date = new Date();
+      const formattedDate = date.toISOString().split("T")[0];
       console.log("ssafasf");
       db.query(
-        "INSERT INTO ratings (student_id, teacher_subject_id, teaching_method, attitude, communication, organization, supportiveness, engagement, likes, dislikes, comment,date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?)",
+        "INSERT INTO ratings (student_id, teacher_subject_id, teaching_method, attitude, communication, organization, supportiveness, engagement, likes, dislikes, comment,date, approved) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?, ?)",
         [
           student_id,
           teacher_subject_id,
@@ -239,7 +223,8 @@ WHERE
           likes,
           dislikes,
           comment,
-          date
+          date,
+          1,
         ],
         (err, result) => {
           if (err) {
@@ -259,12 +244,11 @@ WHERE
 
   Delete: {
     async singleRating(req, res) {
-      const ratingId = req.params.id;
+      const id = req.params.id;
       const { deleted } = req.body;
-      console.log(deleted, ratingId);
       db.query(
         "UPDATE ratings SET deleted = ? WHERE rating_id = ?",
-        [deleted,ratingId],
+        [deleted, id],
         (err, result) => {
           if (err) {
             console.error(err);
@@ -273,7 +257,6 @@ WHERE
               .json({ error: "An error occurred while deleting the rating" });
           } else {
             if (result.affectedRows > 0) {
-                            console.log(result);
               res.status(200).json(result);
             } else {
               console.log(result);

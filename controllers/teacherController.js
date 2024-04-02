@@ -64,13 +64,18 @@ const teacherContoller = {
   Post: {
     async singleTeacher(req, res) {
       const { name, email } = req.body;
-      db.query("INSERT INTO teachers (name, email) VALUES (?, ?)", [name, email], (err, result) => {
-        if (err) {
-          res.status(500).send(err);
-        } else {
-          res.status(201).send(result);
-        }
-      });
+      try {
+        
+        db.query("INSERT INTO teachers (name, email) VALUES (?, ?)", [name, email], (err, result) => {
+          if (err) {
+            res.status(500).send(err);
+          } else {
+            res.status(201).send(result);
+          }
+        });
+      } catch (error) {
+        console.log(error)
+      }
     },
 
     async multipleTeacher(req, res) {},
@@ -91,5 +96,5 @@ const teacherContoller = {
     async multipleTeacher(req, res) {},
   },
 };
-
+ 
 module.exports = teacherContoller;

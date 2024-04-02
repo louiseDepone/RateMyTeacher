@@ -10,10 +10,20 @@ router.get(
   authenticateToken,
   enrollmentController.Get.multipleEnrollment
 );
+router.get(
+  "/multipleEnrollementDependingOnTheTeacherSubjectId/:id",
+  authenticateToken,
+  enrollmentController.Get.multipleEnrollementDependingOnTheTeacherSubjectId
+);
 router.post(
   "/enrollment",
   authenticateToken,
   enrollmentController.Post.singleEnrollment
+);
+router.post(
+  "/Multipleenrollment",
+  authenticateToken,
+  enrollmentController.Post.multipleEnrollmentToOneTeacherSubject
 );
 router.get(
   "/enrollment/:id",
@@ -25,10 +35,18 @@ router.put(
   authenticateToken,
   enrollmentController.Put.singleEnrollment
 );
+// router.delete(
+//   "/enrollment/:id",
+//   authenticateToken,
+//   enrollmentController.Delete.singleEnrollment
+// );
 router.delete(
-  "/enrollment/:id",
+  "/realDeletion/:id",
   authenticateToken,
-  enrollmentController.Delete.singleEnrollment
+  enrollmentController.Delete.realDeletion
 );
+
+
+
 
 module.exports = router;

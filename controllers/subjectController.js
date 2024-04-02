@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const { db } = require("../configs/database");
 const { jsonwebtoken } = require("../middlewares/authMiddleware");
 const { decoding } = require("../services/jwt");
+const e = require("express");
 
 // subjects:
 
@@ -16,6 +17,7 @@ const subjectController = {
       db.query("SELECT * FROM subjects WHERE subject_id = ?", [subject_id], (err, result) => {
         if (err) {
           res.status(500).send(err);
+          console.log(err)
         } else {
           res.status(200).send(result);
         }
@@ -52,13 +54,18 @@ const subjectController = {
   Post: {
     async singleSubject(req, res) {
       const { subject } = req.body;
-      db.query("INSERT INTO subjects (subject) VALUES (?)", [subject], (err, result) => {
-        if (err) {
-          res.status(500).send(err);
+      try {
+        
+        db.query("INSERT INTO subjects (subject) VALUES (?)", [subject], (err, result) => {
+          if (err) {
+            res.status(500).send(err);
+          }
+          res.status(201).send(result);
         }
-        res.status(201).send(result);
+        );
+      } catch (error) {
+        res.status(500).send(error);
       }
-      );
     },
 
     async multipleSubject(req, res) {},
