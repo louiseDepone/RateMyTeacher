@@ -89,7 +89,7 @@ const studentController = {
         (err, result) => {
           if (err) {
             console.log(err);
-            res.status(500).json({ message: "Server Error" });
+            res.status(401).json({ message: err.code === "ER_DUP_ENTRY" ? "Email Already Exists" : "Server Error"});
           } else {
             res.status(201).json({ message: "Student Registered" });
           }

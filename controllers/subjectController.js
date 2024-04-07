@@ -13,7 +13,7 @@ const e = require("express");
 const subjectController = {
   Get: {
     singleSubject(req, res) {
-      const subject_id = req.params.subject_id;
+      const id = req.params.id;
       db.query("SELECT * FROM subjects WHERE subject_id = ?", [subject_id], (err, result) => {
         if (err) {
           res.status(500).send(err);
@@ -33,6 +33,29 @@ const subjectController = {
       }
       );
     },
+    multipleSubjectOfACertainUser(req, res) {
+      const id = req.params.id;
+      db.query(
+        `
+      SELECT DISTINCT sub.subject_id,
+sub.subject
+FROM subjects sub
+JOIN teacher_subjects ts ON sub.subject_id = ts.subject_id
+JOIN enrollments e ON ts.teacher_subject_id = e.teacher_subject_id
+JOIN students s ON e.student_id = s.student_id
+WHERE s.student_id = ?
+      `,
+        [id],
+        (err, result) => {
+          if (err) {
+            res.status(500).send(err);
+          }
+          res.status(200).send(result);
+        }
+      );
+    },
+
+    
   },
 
   Put: {

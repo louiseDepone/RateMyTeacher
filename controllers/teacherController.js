@@ -23,6 +23,26 @@ const teacherContoller = {
         }
       });
     },
+    mutliplesTeacherOfACertainUser(req, res) {
+      const id = req.params.id;
+      db.query(
+        `SELECT t.teacher_id, t.name AS teacher_name, COUNT(DISTINCT t.teacher_id) AS teacher_count
+FROM teachers t
+JOIN teacher_subjects ts ON t.teacher_id = ts.teacher_id
+JOIN enrollments e ON ts.teacher_subject_id = e.teacher_subject_id
+JOIN students s ON e.student_id = s.student_id
+WHERE s.student_id = ?
+GROUP BY t.teacher_id, t.name;`,
+        [id],
+        (err, result) => {
+          if (err) {
+            res.status(500).send(err);
+          } else {
+            res.status(200).send(result);
+          }
+        }
+      );
+    },
 
     multipleTeacher(req, res) {
       db.query("SELECT * FROM teachers", (err, result) => {

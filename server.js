@@ -20,13 +20,14 @@ const studentRoute = require("./routes/studentRoute");
 const subjectRoute = require("./routes/subjectRoute");
 const teacherRoute = require("./routes/teacherRoute");
 const teacherSubjectRoute = require("./routes/teacherSubjectRoute");
+const pinpostRoute = require("./routes/pinpostRoute");
 
 
 
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use("/", enrollmentRoute, ratingRoute, studentRatingRoute, studentRoute, subjectRoute, teacherRoute, teacherSubjectRoute);
+app.use("/", enrollmentRoute, ratingRoute, studentRatingRoute, studentRoute, subjectRoute, teacherRoute, teacherSubjectRoute, pinpostRoute);
 
 
 

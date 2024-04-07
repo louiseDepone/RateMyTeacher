@@ -109,7 +109,9 @@ WHERE
         ratings.student_id,
         students.name AS studentName,
         teachers.name AS teacherName,
+        teachers.teacher_id,
         subjects.subject AS subjectName,
+        subjects.subject_id ,
         ratings.comment,
         ratings.teaching_method,
         ratings.attitude,
@@ -122,6 +124,7 @@ WHERE
         ratings.date,
         ratings.approved,
         ratings.deleted
+        
 
       FROM
         ratings
@@ -257,7 +260,31 @@ WHERE
               .json({ error: "An error occurred while deleting the rating" });
           } else {
             if (result.affectedRows > 0) {
-              res.status(200).json(result);
+              // res.status(200).json(result);
+                    db.query(
+                      "DELETE FROM pinpost WHERE rating_id = ? ",
+                      [id],
+                      (err, result) => {
+                        if (err) {
+                          console.error(err);
+                          res
+                            .status(500)
+                            .json({
+                              error:
+                                "An error occurred while deleting the rating",
+                            });
+                        } else {
+                          if (result.affectedRows > 0) {
+                              res.status(200).json(result);
+                          } else {
+                            console.log(result);
+                            res.status(404).json({ error: "Rating not found" });
+                          }
+                        }
+                      }
+                    );
+
+
             } else {
               console.log(result);
               res.status(404).json({ error: "Rating not found" });

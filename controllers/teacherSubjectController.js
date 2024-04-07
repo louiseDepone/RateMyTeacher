@@ -106,8 +106,8 @@ JOIN subjects s ON ts.subject_id = s.subject_id`;
       });
     },
   },
-
-  Put: {
+ 
+  Put: { 
     async singleTeacherSubject(req, res) {
       const { teacher_subject_id } = req.params;
       const { teacher_id, subject_id } = req.body;
@@ -156,7 +156,7 @@ JOIN subjects s ON ts.subject_id = s.subject_id`;
           });
         }
       );
-    },
+    }, 
   },
 
   Post: {
@@ -173,7 +173,7 @@ JOIN subjects s ON ts.subject_id = s.subject_id`;
           message: "Teacher_Subject created successfully",
         });
       });
-    },
+    }, 
 
     async multipleTeacherSubject(req, res) {
       const { teacher_id, subject_id } = req.body;
