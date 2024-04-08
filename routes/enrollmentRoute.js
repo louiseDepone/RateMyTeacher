@@ -18,7 +18,7 @@ router.get(
 router.get(
   "/multipleEnrollementDependingOnTheStudentId/:id",
   authenticateToken,
-  enrollmentController.Get.multipleEnrollementDependingOnTheTeacherSubjectId
+  enrollmentController.Get.multipleEnrollementDependingOnTheStudentId
 );
 router.post(
   "/enrollment",
