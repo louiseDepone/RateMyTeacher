@@ -16,5 +16,10 @@ router.get(
 router.post("/ratings", authenticateToken, ratingController.Post.singleRating);
 router.put("/ratings/:id", authenticateToken, ratingController.Put.singleRating);
 router.put("/tohiderating/:id", authenticateToken, ratingController.Delete.singleRating);
+router.put(
+  "/approveDisapproveraiting/:id",
+  authenticateToken,
+  ratingController.Delete.approveDisapproveraiting
+);
 
 module.exports = router;

@@ -227,7 +227,7 @@ WHERE
           dislikes,
           comment,
           date,
-          1,
+          0,
         ],
         (err, result) => {
           if (err) {
@@ -276,10 +276,7 @@ WHERE
                         } else {
                           if (result.affectedRows > 0) {
                               res.status(200).json(result);
-                          } else {
-                            console.log(result);
-                            res.status(404).json({ error: "Rating not found" });
-                          }
+                          } 
                         }
                       }
                     );
@@ -294,7 +291,47 @@ WHERE
       );
     },
 
-    async multipleRating(req, res) {},
+    async approveDisapproveraiting(req, res) {
+      const id = req.params.id;
+      const { approved } = req.body;
+      console.log(req.body)
+      db.query(
+        "UPDATE ratings SET approved = ? WHERE rating_id = ?",
+        [approved, id],
+        (err, result) => {
+          if (err) {
+            console.error(err);
+            res
+              .status(500)
+              .json({ error: "An error occurred while deleting the rating" });
+          } else {
+            if (result.affectedRows > 0) {
+              // res.status(200).json(result);
+              if(approved === 0){
+                db.query(
+                  "DELETE FROM pinpost WHERE rating_id = ? ",
+                  [id],
+                  (err, result) => {
+                    if (err) {
+                      console.error(err);
+                      res.status(500).json({
+                        error: "An error occurred while deleting the rating",
+                      });
+                    } else {
+                      
+                    }
+                  }
+                );
+              }
+            } else {
+              console.log(result);
+              res.status(404).json({ error: "Rating not found" });
+            }
+          }
+          res.status(200).json({ message: "Rating approved" });
+        }
+      );
+    }
   },
 };
 

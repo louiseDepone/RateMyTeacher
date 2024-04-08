@@ -80,6 +80,39 @@ WHERE
         }
         res.status(200).json(result);
       });
+    },
+    multipleEnrollementDependingOnTheStudentId(req, res) {
+      const { id } = req.params;
+      const query = `
+SELECT 
+  e.enrollment_id, 
+  e.student_id, 
+  e.teacher_subject_id, 
+  e.deleted,
+  t.name AS teacher_name,
+  s.name AS student_name,
+  sub.subject
+FROM 
+  enrollments e
+JOIN 
+  teacher_subjects ts ON e.teacher_subject_id = ts.teacher_subject_id
+JOIN 
+  teachers t ON ts.teacher_id = t.teacher_id
+JOIN 
+  students s ON e.student_id = s.student_id
+JOIN 
+  subjects sub ON ts.subject_id = sub.subject_id
+WHERE 
+  e.student_id = ?  ; 
+	`;
+      db.query(query, [id], (err, result) => {
+        if (err) {
+          return res.status(500).json({
+            message: "Internal Server Error",
+          });
+        }
+        res.status(200).json(result);
+      });
     }
   },
 
