@@ -79,8 +79,8 @@ const studentController = {
   Post: {
     async singleStudent(req, res) {},
     registerStudent(req, res) {
-      const role = "admin";
-      const { name, email, password, student_id  } = req.body;
+      const role = "student";
+      const { name, email, password, student_id } = req.body;
       const hashedPassword = bcrypt.hashSync(password, 10);
       const query = `INSERT INTO students (name, email, password, role, student_id) VALUES (?, ?, ?, ?, ?)`;
       db.query(
@@ -89,7 +89,14 @@ const studentController = {
         (err, result) => {
           if (err) {
             console.log(err);
-            res.status(401).json({ message: err.code === "ER_DUP_ENTRY" ? "Email Already Exists" : "Server Error"});
+            res
+              .status(401)
+              .json({
+                message:
+                  err.code === "ER_DUP_ENTRY"
+                    ? "Email Already Exists"
+                    : "Server Error",
+              });
           } else {
             res.status(201).json({ message: "Student Registered" });
           }
@@ -101,14 +108,12 @@ const studentController = {
       const { email, password } = req.body;
       const query = `SELECT * FROM students WHERE email = ?`;
       db.query(query, [email], (err, result) => {
-   
         if (err) {
           res.status(500).json({ message: "Server Error" });
         } else {
-          if(result.length === 0 ) {
-
+          if (result.length === 0) {
             res.status(401).json({ message: "Invalid Credentials" });
-            return
+            return;
           }
           try {
             const isPasswordCorrect = bcrypt.compareSync(
@@ -117,17 +122,18 @@ const studentController = {
             );
             if (isPasswordCorrect) {
               const token = jsonwebtoken.sign(
-                { id: result[0].student_id, 
-                  role: result[0].role ,
+                {
+                  id: result[0].student_id,
+                  role: result[0].role,
                   name: result[0].name,
-                  email: result[0].email},
+                  email: result[0].email,
+                },
                 process.env.JWT_SECRET
-                
               );
-              console.log("Login Successful")
+              console.log("Login Successful");
               res.status(200).json({ message: "Login Successful", token });
             } else {
-              console.log("invaliedd!!!")
+              console.log("invaliedd!!!");
               res.status(401).json({ message: "Invalid Credentials" });
             }
           } catch (error) {
@@ -136,7 +142,6 @@ const studentController = {
             res.status(401).json({ message: "Invalid Credentials" });
           }
         }
-
       });
     },
   },

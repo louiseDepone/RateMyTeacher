@@ -149,6 +149,7 @@ WHERE
   Post: {
     async singleEnrollment(req, res) {
       const { student_id, teacher_subject_id } = req.body;
+      console.log(req.body);
       db.query("INSERT INTO Enrollments (student_id, teacher_subject_id) VALUES (?, ?)", [student_id, teacher_subject_id], (err, result) => {
         if (err) {
           res.status(500).send(err);
