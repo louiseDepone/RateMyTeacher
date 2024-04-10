@@ -7,4 +7,4 @@ function decoding(res){
     return decode.jwtDecode(res.headers.authorization);
 }
 
-module.exports = {decoding}
+module.exports = {decoding} 
