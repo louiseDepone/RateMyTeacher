@@ -123,7 +123,14 @@ WHERE
   Put: {
     async singleEnrollment(req, res) {
       const { enrollment_id } = req.params;
+
       const { student_id, teacher_subject_id, deleted } = req.body;
+      if (!student || !teacher_subject_id || !deleted) {
+        return res.status(400).json({
+          message: "student id, teacher subject_id, deleted are required",
+        });
+      }
+
       const query = `UPDATE Enrollments SET student_id = ?, teacher_subject_id = ?, deleted = ? WHERE enrollment_id = ?;`;
       db.query(query, [student_id, teacher_subject_id, deleted, enrollment_id], (err, result) => {
         if (err) {
@@ -139,6 +146,11 @@ WHERE
     async multipleEnrollment(req, res) {
       const { enrollment_id } = req.params;
       const { student_id, teacher_subject_id, deleted } = req.body;
+      if (student_id === undefined || teacher_subject_id === undefined || deleted === undefined) {
+        return res.status(400).json({
+          message: "student_id, teacher_subject_id, deleted are required",  
+        });
+      }
       const query = `UPDATE Enrollments SET student_id = ?, teacher_subject_id = ?, deleted = ? WHERE enrollment_id = ?;`;
       db.query(query, [student_id, teacher_subject_id, deleted, enrollment_id], (err, result) => {
         if (err) {
@@ -153,8 +165,13 @@ WHERE
   },
 
   Post: {
-    async singleEnrollment(req, res) {
+    async singleEnrollment(req, res) { 
       const { student_id, teacher_subject_id } = req.body;
+      if (!student_id  || !teacher_subject_id) {
+        return res.status(400).json({
+          message: "student and complete course are required",
+        });
+      }
       console.log(req.body);
       db.query("INSERT INTO Enrollments (student_id, teacher_subject_id) VALUES (?, ?)", [student_id, teacher_subject_id], (err, result) => {
         if (err) {
@@ -167,6 +184,11 @@ WHERE
 
     async multipleEnrollmentToOneTeacherSubject(req, res) {
       const { student_id, teacher_subject_id } = req.body;
+     if (!student_id || !teacher_subject_id) {
+       return res.status(400).json({
+         message: "student and complete course are required",
+       });
+     }
       try {
         
         for (let i = 0; i < student_id.length; i++) {

@@ -163,6 +163,19 @@ WHERE
         dislikes,
         comment,
       } = req.body;
+      if (
+        !teaching_method ||
+        !attitude ||
+        !communication ||
+        !organization ||
+        !supportiveness ||
+        !engagement ||
+        !likes ||
+        !dislikes 
+      ) {
+        res.status(400).json({ error: "All fields are required" });
+        return;
+      }
       db.query(
         "UPDATE ratings SET teaching_method = ?, attitude = ?, communication = ?, organization = ?, supportiveness = ?, engagement = ?, likes = ?, dislikes = ?  , comment = ?WHERE rating_id = ?",
         [
@@ -208,6 +221,22 @@ WHERE
         dislikes,
         comment,
       } = req.body.data;
+      if(
+        !student_id ||
+        !teacher_subject_id ||
+        !teaching_method ||
+        !attitude ||
+        !communication ||
+        !organization ||
+        !supportiveness ||
+        !engagement ||
+        !likes ||
+        !dislikes ||
+        !comment
+      ){
+        res.status(400).json({ error: "All fields are required" });
+        return;
+      }
 
       const date = new Date();
       const formattedDate = date.toISOString().split("T")[0];

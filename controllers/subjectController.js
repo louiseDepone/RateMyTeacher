@@ -73,6 +73,11 @@ WHERE s.student_id = ?
     async singleSubject(req, res) {
       const subject_id = req.params.subject_id;
       const { subject } = req.body;
+      if(!subject){
+        return res.status(400).json({
+          message: "Subject name is required"
+        });
+      }
       db.query("UPDATE subjects SET subject = ? WHERE subject_id = ?", [subject, subject_id], (err, result) => {
         if (err) {
          
@@ -92,6 +97,11 @@ WHERE s.student_id = ?
   Post: {
     async singleSubject(req, res) {
       const { subject } = req.body;
+      if(!subject){
+        return res.status(400).json({
+          message: "Subject is required"
+        });
+      }
       try {
         
         db.query("INSERT INTO subjects (subject) VALUES (?)", [subject], (err, result) => {
@@ -115,7 +125,7 @@ WHERE s.student_id = ?
 
   Delete: {
     async singleSubject(req, res) {
-      const subject_id = req.params.subject_id;
+      const subject_id = req.params.id;
       db.query("UPDATE subjects SET deleted = true WHERE subject_id = ?", [subject_id], (err, result) => {
         if (err) {
          

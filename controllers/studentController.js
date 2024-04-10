@@ -91,6 +91,9 @@ const studentController = {
       let continueRegister = false;
       let { name, email, password, student_id, role } = req.body;
     
+      if (!name || !email || !password || !student_id) {
+        return res.status(400).json({ message: "All fields are required" });
+      }
       const hashedPassword = bcrypt.hashSync(password, 10);
 
          const querys = `SELECT * FROM students WHERE email = ? `;
@@ -157,6 +160,7 @@ const studentController = {
     async multipleStudent(req, res) {},
     async loginStudent(req, res) {
       const { email, password } = req.body;
+
       const query = `SELECT * FROM students WHERE email = ?`;
       db.query(query, [email], (err, result) => {
         if (err) {
@@ -201,6 +205,8 @@ const studentController = {
   },
   Delete: {
     async singleStudent(req, res) {
+
+      const student_id = req.params.id;
       // this is a soft delete      const student_id = req.params.student_id;
       const query = `UPDATE students SET deleted = true WHERE student_id = ?`;
       db.query(query, [student_id], (err, result) => {

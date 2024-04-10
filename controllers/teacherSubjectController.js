@@ -109,6 +109,7 @@ JOIN subjects s ON ts.subject_id = s.subject_id`;
     async singleTeacherSubject(req, res) {
       const { teacher_subject_id } = req.params;
       const { teacher_id, subject_id } = req.body;
+      if(!teacher_id || !subject_id) return res.status(400).json({message: "Please provide teacher_id and subject_id"})
       const query = `UPDATE teacher_subjects SET teacher_id = ?, subject_id = ? WHERE teacher_subject_id = ? ;`;
       db.query(
         query,
@@ -134,6 +135,13 @@ JOIN subjects s ON ts.subject_id = s.subject_id`;
     async multipleTeacherSubject(req, res) {
       const { teacher_subject_id } = req.params;
       const { teacher_id, subject_id } = req.body;
+      if(
+        !teacher_id || !subject_id || !teacher_subject_id
+      ){
+        return res.status(400).json({
+          message: "Please provide teacher_id, subject_id and teacher_subject_id",
+        });
+      }
       const query = `UPDATE teacher_subjects SET teacher_id = ?, subject_id = ?;`;
       db.query(
         query,
@@ -160,6 +168,7 @@ JOIN subjects s ON ts.subject_id = s.subject_id`;
   Post: {
     async singleTeacherSubject(req, res) {
       const { teacher_id, subject_id } = req.body;
+      if(!teacher_id || !subject_id) return res.status(400).json({message: "Please provide teacher_id and subject_id"})
       const query = `INSERT INTO teacher_subjects (teacher_id, subject_id) VALUES (?, ?);`;
       db.query(query, [teacher_id, subject_id], (err, result) => {
         if (err) {
@@ -175,6 +184,7 @@ JOIN subjects s ON ts.subject_id = s.subject_id`;
 
     async multipleTeacherSubject(req, res) {
       const { teacher_id, subject_id } = req.body;
+      if(!teacher_id || !subject_id) return res.status(400).json({message: "Please provide teacher_id and subject_id"})
       const query = `INSERT INTO teacher_subjects (teacher_id, subject_id) VALUES (?, ?);`;
       db.query(query, [teacher_id, subject_id], (err, result) => {
         if (err) {
@@ -190,8 +200,9 @@ JOIN subjects s ON ts.subject_id = s.subject_id`;
   },
   Delete: {
     async singleTeacherSubject(req, res) {
-      const { id } = req.params;
+      const { id } = req.params.id;
       const {isDeleted} = req.body;
+      if(!isDeleted) return res.status(400).json({message: "Please provide isDeleted"})
       const query = `UPDATE teacher_subjects SET deleted = ? WHERE teacher_subject_id = ?;`;
       try {
         

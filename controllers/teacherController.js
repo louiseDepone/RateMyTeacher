@@ -70,8 +70,10 @@ GROUP BY t.teacher_id, t.name;`,
   Put: {
     async singleTeacher(req, res) {
       const teacher_id = req.params.teacher_id;
-      const { name, email } = req.body;
-      db.query("UPDATE teachers SET name = ?, email = ? WHERE teacher_id = ?", [name, email, teacher_id], (err, result) => {
+      const { name } = req.body;
+      if(!name) return res.status(400).json({message: "teacher name is required"});
+
+      db.query("UPDATE teachers SET name = ? WHERE teacher_id = ?", [name,  teacher_id], (err, result) => {
         if (err) {
           
           return res.status(500).json({
@@ -87,8 +89,11 @@ GROUP BY t.teacher_id, t.name;`,
 
     async multipleTeacher(req, res) {
       const teacher_id = req.params.teacher_id;
-      const { name, email } = req.body;
-      db.query("UPDATE teachers SET name = ?, email = ? WHERE teacher_id = ?", [name, email, teacher_id], (err, result) => {
+      const { name } = req.body;
+      
+      if (!name) return res.status(400).json({ message: "teacher name is required" });
+
+      db.query("UPDATE teachers SET name = ? WHERE teacher_id = ?", [name, teacher_id], (err, result) => {
         if (err) {
           
           return res.status(500).json({
@@ -104,10 +109,13 @@ GROUP BY t.teacher_id, t.name;`,
 
   Post: {
     async singleTeacher(req, res) {
-      const { name, email } = req.body;
+      const { name } = req.body;
+
+      if (!name) return res.status(400).json({ message: "teacher name is required" });
+
       try {
         
-        db.query("INSERT INTO teachers (name, email) VALUES (?, ?)", [name, email], (err, result) => {
+        db.query("INSERT INTO teachers (name) VALUES (?)", [name], (err, result) => {
           if (err) {
             
           return res.status(500).json({
@@ -128,7 +136,7 @@ GROUP BY t.teacher_id, t.name;`,
 
   Delete: {
     async singleTeacher(req, res) {
-      const teacher_id = req.params.teacher_id;
+      const teacher_id = req.params.id;
       db.query("UPDATE teachers SET deleted = true WHERE teacher_id = ?", [teacher_id], (err, result) => {
         if (err) {
           
