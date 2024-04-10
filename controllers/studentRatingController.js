@@ -30,7 +30,7 @@ const studentRatingController = {
             message: "Student_Rating not found",
           });
         }
-        res.status(200).json(result);
+       return res.status(200).json(result);
       });
     },
 
@@ -48,7 +48,7 @@ const studentRatingController = {
             message: "Student_Rating not found",
           });
         }
-        res.status(200).json(result);
+      return res.status(200).json(result);
       });
     },
   },
@@ -65,7 +65,7 @@ const studentRatingController = {
             err
           });
         }
-        res.status(200).json(result);
+       return res.status(200).json(result);
       });
     },
 
@@ -83,7 +83,7 @@ const studentRatingController = {
             err
           });
         }
-        res.status(201).json(result);
+       return res.status(201).json(result);
       });
     },
 
@@ -100,7 +100,7 @@ const studentRatingController = {
             err
           });
         }
-        res.status(200).json(result);
+       return res.status(200).json(result);
       });
     },
 

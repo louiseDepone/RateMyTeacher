@@ -4,7 +4,7 @@ const { authenticateToken } = require("../middlewares/authMiddleware");
 
 
 const enrollmentController = require("../controllers/enrollmentController");
-
+console.log("enrollmentRoute.js: enrollmentController: ");
 router.get(
   "/enrollment",
   authenticateToken,

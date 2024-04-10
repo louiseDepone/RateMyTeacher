@@ -3,6 +3,7 @@ const router = express.Router();
 const { authenticateToken } = require("../middlewares/authMiddleware");
 
 const studentController = require("../controllers/studentController");
+console.log("studentRoute.js: studentController: ");
 const { verify } = require("jsonwebtoken");
 router.get("/students", authenticateToken, studentController.Get.multipleStudent);
 router.get("/students/:id", authenticateToken, studentController.Get.singleStudent);

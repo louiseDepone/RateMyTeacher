@@ -3,6 +3,7 @@ const router = express.Router();
 const { authenticateToken } = require("../middlewares/authMiddleware");
 
 const studentRatingController = require("../controllers/studentRatingController");
+console.log("studentRatingRoute.js: studentRatingController: ");
 
 router.get("/studentRatings", authenticateToken, studentRatingController.Get.multipleStudentRating);
 router.get("/studentRatings/:id", authenticateToken, studentRatingController.Get.singleStudentRating);

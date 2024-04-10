@@ -3,6 +3,7 @@ const router = express.Router();
 const { authenticateToken } = require("../middlewares/authMiddleware");
 
 const subjectController = require("../controllers/subjectController");
+console.log("subjectRoute.js: subjectController: ");
 
 
 router.get("/subjects", authenticateToken, subjectController.Get.multipleSubject);

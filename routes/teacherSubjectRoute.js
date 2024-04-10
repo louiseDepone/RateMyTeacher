@@ -3,6 +3,7 @@ const router = express.Router();
 const { authenticateToken } = require("../middlewares/authMiddleware");
 
 const teacherSubjectController = require("../controllers/teacherSubjectController");
+console.log("teacherSubjectRoute.js: teacherSubjectController: ");
 router.get("/teacherSubjects", authenticateToken, teacherSubjectController.Get.multipleTeacherSubject);
 router.get("/teacherSubjects/:id", authenticateToken, teacherSubjectController.Get.singleTeacherSubject);
 router.get("/studentteackingcourses",authenticateToken,teacherSubjectController.Get.emrolledsubjects);

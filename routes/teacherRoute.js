@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { authenticateToken } = require("../middlewares/authMiddleware");
 const teacherController = require("../controllers/teacherController");
+console.log("teacherRoute.js: teacherController: ");
 
 
 router.get("/teachers", authenticateToken, teacherController.Get.multipleTeacher);

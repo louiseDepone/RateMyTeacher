@@ -22,7 +22,7 @@ const subjectController = {
             err
           });
         } else {
-          res.status(200).send(result);
+          return res.status(200).send(result);
         }
       });
     },
@@ -36,7 +36,7 @@ const subjectController = {
             err
           });
         }
-        res.status(200).send(result);
+  return res.status(200).send(result);
       }
       );
     },
@@ -61,7 +61,7 @@ WHERE s.student_id = ?
             err
           });
           }
-          res.status(200).send(result);
+        return res.status(200).send(result);
         }
       );
     },
@@ -86,7 +86,7 @@ WHERE s.student_id = ?
             err
           });
         } else {
-          res.status(200).send(result);
+         return res.status(200).send(result);
         }
       });
     },
@@ -112,7 +112,7 @@ WHERE s.student_id = ?
             err
           });
           }
-          res.status(201).send(result);
+        return res.status(201).send(result);
         }
         );
       } catch (error) {
@@ -135,9 +135,9 @@ WHERE s.student_id = ?
           });
         } else {
           if (result.affectedRows > 0) {
-            res.status(200).send(result);
+           return res.status(200).send(result);
           } else {
-            res.status(404).send({ message: "Subject not found" });
+        return res.status(404).send({ message: "Subject not found" });
           }
         }
       });

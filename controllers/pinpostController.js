@@ -28,7 +28,7 @@ const pinpostController = {
                 message: "Pinpost not found",
             });
             }
-            res.status(200).json(result);
+             return res.status(200).json(result);
         });
         },
         singleUserPinpost(req, res) {
@@ -42,7 +42,7 @@ const pinpostController = {
                err,
              });
             }
-            res.status(200).json(result);
+            return res.status(200).json(result);
         });
         },
       
@@ -59,7 +59,7 @@ const pinpostController = {
                 message: "Pinpost not found",
             });
             }
-            res.status(200).json(result);
+             return res.status(200).json(result);
         });
         },
     },
@@ -75,8 +75,8 @@ const pinpostController = {
                 message: "Internal Server Error",
             });
             }
-            res.status(200).json({
-            message: "Pinpost updated successfully",
+            return res.status(200).json({
+              message: "Pinpost updated successfully",
             });
         });
         }
@@ -92,9 +92,9 @@ const pinpostController = {
                 message: "Internal Server Error",
             });
             }
-            res.status(201).json({
-            message: "Pinpost created successfully",
-            });
+           return res.status(201).json({
+             message: "Pinpost created successfully",
+           });
         });
         },
     },
@@ -109,9 +109,9 @@ const pinpostController = {
                   message: "Internal Server Error",
                 });
               }
-              res.status(200).json({
-                message: "Pinpost deleted successfully",
-              });
+             return res.status(200).json({
+               message: "Pinpost deleted successfully",
+             });
             });
         }
     }

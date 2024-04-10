@@ -25,7 +25,7 @@ const teacherSubjectController = {
             message: "Teacher_Subject not found",
           });
         }
-        res.status(200).json(result);
+        return res.status(200).json(result);
       });
     },
     singleUserTeacherSubject(req, res) {
@@ -53,7 +53,7 @@ WHERE
             err
           });
         }
-        res.status(200).json(result);
+      return res.status(200).json(result);
       });
     },
 
@@ -74,7 +74,7 @@ JOIN subjects s ON ts.subject_id = s.subject_id`;
             message: "Internal Server Error",
           });
         }
-        res.status(200).json(result);
+        return res.status(200).json(result);
       });
     },
     emrolledsubjects(req, res) {
@@ -100,7 +100,7 @@ JOIN subjects s ON ts.subject_id = s.subject_id`;
             message: "Internal Server Error",
           });
         }
-        res.status(200).json(result);
+       return res.status(200).json(result);
       });
     },
   },
@@ -125,7 +125,7 @@ JOIN subjects s ON ts.subject_id = s.subject_id`;
               message: "Teacher_Subject not found",
             });
           }
-          res.status(200).json({
+          return res.status(200).json({
             message: "Teacher_Subject updated successfully",
           });
         }
@@ -157,9 +157,9 @@ JOIN subjects s ON ts.subject_id = s.subject_id`;
               message: "Teacher_Subject not found",
             });
           }
-          res.status(200).json({
-            message: "Teacher_Subject updated successfully",
-          });
+         return res.status(200).json({
+           message: "Teacher_Subject updated successfully",
+         });
         }
       );
     }, 
@@ -176,7 +176,7 @@ JOIN subjects s ON ts.subject_id = s.subject_id`;
             message: "Internal Server Error",
           });
         }
-        res.status(201).json({
+        return res.status(201).json({
           message: "Teacher_Subject created successfully",
         });
       });
@@ -192,9 +192,9 @@ JOIN subjects s ON ts.subject_id = s.subject_id`;
             message: "Internal Server Error",
           });
         }
-        res.status(201).json({
-          message: "Teacher_Subject created successfully",
-        });
+       return res.status(201).json({
+         message: "Teacher_Subject created successfully",
+       });
       });
     },
   },
@@ -229,7 +229,7 @@ JOIN subjects s ON ts.subject_id = s.subject_id`;
             }
           });
           
-        res.status(200).json({message: "good"})
+  return res.status(200).json({ message: "good" });
         
       } catch (error) {
         console.log(error)

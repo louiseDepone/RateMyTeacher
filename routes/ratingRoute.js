@@ -3,6 +3,7 @@ const router = express.Router();
 const { authenticateToken } = require("../middlewares/authMiddleware");
 
 const ratingController = require("../controllers/ratingController");
+console.log("ratingRoute.js: ratingController: ");
 
 router.get("/ratings", authenticateToken, ratingController.Get.multipleRating);
 router.get("/ratings/:id", authenticateToken, ratingController.Get.singleRating);

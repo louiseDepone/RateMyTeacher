@@ -46,7 +46,7 @@ GROUP BY t.teacher_id, t.name;`,
             err
           });
           } else {
-            res.status(200).send(result);
+        return res.status(200).send(result);
           }
         }
       );
@@ -61,7 +61,7 @@ GROUP BY t.teacher_id, t.name;`,
             err
           });
         }
-        res.status(200).send(result);
+     return res.status(200).send(result);
       }
       );
     },
@@ -82,7 +82,7 @@ GROUP BY t.teacher_id, t.name;`,
           });
 
         } else {
-          res.status(200).send(result);
+       return res.status(200).send(result);
         }
       });
     },
@@ -101,7 +101,7 @@ GROUP BY t.teacher_id, t.name;`,
             err
           });
         } else {
-          res.status(200).send(result);
+       return res.status(200).send(result);
         }
       });
     },
@@ -123,7 +123,7 @@ GROUP BY t.teacher_id, t.name;`,
             err
           });
           } else {
-            res.status(201).send(result);
+          return res.status(201).send(result);
           }
         });
       } catch (error) {

@@ -28,7 +28,7 @@ const enrollmentController = {
             message: "Enrollment not found",
           });
         }
-        res.status(200).json(result);
+        return res.status(200).json(result);
       });
      },
 
@@ -46,7 +46,7 @@ const enrollmentController = {
             message: "Enrollment not found",
           });
         }
-        res.status(200).json(result);
+          return res.status(200).json(result);
       });
     },
 
@@ -81,7 +81,7 @@ WHERE
             err
           });
         }
-        res.status(200).json(result);
+        return res.status(200).json(result);
       });
     },
     multipleEnrollementDependingOnTheStudentId(req, res) {
@@ -115,7 +115,7 @@ WHERE
             err
           });
         }
-        res.status(200).json(result);
+     return res.status(200).json(result);
       });
     }
   },
@@ -139,7 +139,7 @@ WHERE
             err
           });
         }
-        res.status(200).json(result);
+      return res.status(200).json(result);
       });
     },
 
@@ -159,7 +159,7 @@ WHERE
             err
           });
         }
-        res.status(200).json(result);
+      return res.status(200).json(result);
       });
     },
   },
@@ -175,9 +175,9 @@ WHERE
       console.log(req.body);
       db.query("INSERT INTO Enrollments (student_id, teacher_subject_id) VALUES (?, ?)", [student_id, teacher_subject_id], (err, result) => {
         if (err) {
-          res.status(500).send(err);
+           return res.status(500).send(err);
         }
-        res.status(201).send(result);
+        return res.status(201).send(result);
       }
       );
     },
@@ -196,7 +196,7 @@ WHERE
           try {
             db.query("INSERT INTO Enrollments (student_id, teacher_subject_id) VALUES (?, ?)", [student_id[i], teacher_subject_id], (err, result) => {
               if (err) {
-                res.status(500).send(err);
+                return res.status(500).send(err);
               }
             });
   
@@ -218,9 +218,9 @@ WHERE
       const { enrollment_id } = req.params;
       db.query("UPDATE Enrollments SET deleted = true WHERE enrollment_id = ?", [enrollment_id], (err, result) => {
         if (err) {
-          res.status(500).send(err); 
+     return res.status(500).send(err); 
         }
-        res.status(200).send(result);
+      return res.status(200).send(result);
       });
     },
 
@@ -230,17 +230,17 @@ WHERE
         if (err) {
           res.status(500).send(err);
         }
-        res.status(200).send(result);
+      return res.status(200).send(result);
       });
     },
     async realDeletion(req, res) {
       const { id } = req.params;
       db.query("DELETE FROM Enrollments WHERE enrollment_id = ?", [id], (err, result) => {
         if (err) {
-          res.status(500).send(err);
+       return res.status(500).send(err);
         }
         console.log(result)
-        res.status(200).send(result);
+        return res.status(200).send(result);
       });
     }
   },

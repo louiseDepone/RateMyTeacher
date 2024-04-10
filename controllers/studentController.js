@@ -32,9 +32,9 @@ const studentController = {
           });
         } else {
           if (result.length > 0) {
-            res.status(200).json(result[0]);
+             return res.status(200).json(result[0]);
           } else {
-            res.status(404).json({ message: "Student Not Found" });
+            return res.status(404).json({ message: "Student Not Found" });
           }
         }
       });
@@ -49,7 +49,7 @@ const studentController = {
             err
           });
         } else {
-          res.status(200).json(result);
+          return res.status(200).json(result);
         }
       });
     },
@@ -73,9 +73,9 @@ const studentController = {
           });
           } else {
             if (result.affectedRows > 0) {
-              res.status(200).json({ message: "Student Updated" });
+             return res.status(200).json({ message: "Student Updated" });
             } else {
-              res.status(404).json({ message: "Student Not Found" });
+             return res.status(404).json({ message: "Student Not Found" });
             }
           }
         }
@@ -170,8 +170,8 @@ const studentController = {
           });
         } else {
           if (result.length === 0) {
-            res.status(401).json({ message: "Invalid Credentials" });
-            return;
+             return res.status(401).json({ message: "Invalid Credentials" });
+          
           }
           try {
             const isPasswordCorrect = bcrypt.compareSync(
@@ -189,15 +189,15 @@ const studentController = {
                 process.env.JWT_SECRET
               );
               console.log("Login Successful");
-              res.status(200).json({ message: "Login Successful", token });
+          return res.status(200).json({ message: "Login Successful", token });
             } else {
               console.log("invaliedd!!!");
-              res.status(401).json({ message: "Invalid Credentials" });
+          return res.status(401).json({ message: "Invalid Credentials" });
             }
           } catch (error) {
             console.log("isPasswordCorrect");
             console.log(error);
-            res.status(401).json({ message: "Invalid Credentials" });
+           return res.status(401).json({ message: "Invalid Credentials" });
           }
         }
       });
@@ -218,9 +218,9 @@ const studentController = {
           });
         } else {
           if (result.affectedRows > 0) {
-            res.status(200).json({ message: "Student Deleted" });
+          return res.status(200).json({ message: "Student Deleted" });
           } else {
-            res.status(404).json({ message: "Student Not Found" });
+          return res.status(404).json({ message: "Student Not Found" });
           }
         }
       });

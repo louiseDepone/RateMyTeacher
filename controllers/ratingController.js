@@ -38,14 +38,14 @@ const ratingController = {
         (err, result) => {
           if (err) {
             console.error(err);
-            res
-              .status(500)
-              .json({ error: "An error occurred while fetching the rating" });
+             return res
+               .status(500)
+               .json({ error: "An error occurred while fetching the rating" });
           } else {
             if (result.length === 0) {
-              res.status(404).json({ error: "Rating not found" });
+               return res.status(404).json({ error: "Rating not found" });
             } else {
-              res.status(200).json(result[0]);
+              return res.status(200).json(result[0]);
             }
           }
         }
@@ -83,11 +83,11 @@ WHERE
       db.query(query, [id], (err, result) => {
         if (err) {
           console.error(err);
-          res
+          return res
             .status(500)
             .json({ error: "An error occurred while fetching the rating" });
         } else {
-          res.status(200).json(result);
+          return res.status(200).json(result);
         }
       });
     },
@@ -137,12 +137,12 @@ WHERE
         (err, result) => {
           if (err) {
             console.error(err);
-            res
+            return res
               .status(500)
               .json({ error: "An error occurred while fetching the ratings" });
           } else {
             console.log(result);
-            res.status(200).json(result);
+            return res.status(200).json(result);
           }
         }
       );
@@ -193,11 +193,11 @@ WHERE
         (err, result) => {
           if (err) {
             console.error(err);
-            res
-              .status(500)
-              .json({ error: "An error occurred while updating the rating" });
+             return res
+               .status(500)
+               .json({ error: "An error occurred while updating the rating" });
           } else {
-            res.status(200).json(result);
+             return res.status(200).json(result);
           }
         }
       );
@@ -261,11 +261,11 @@ WHERE
         (err, result) => {
           if (err) {
             console.error(err);
-            res
-              .status(500)
-              .json({ error: "An error occurred while creating the rating" });
+           return res
+             .status(500)
+             .json({ error: "An error occurred while creating the rating" });
           } else {
-            res.status(201).json(result);
+            return res.status(201).json(result);
           }
         }
       );
@@ -284,7 +284,7 @@ WHERE
         (err, result) => {
           if (err) {
             console.error(err);
-            res
+            return res
               .status(500)
               .json({ error: "An error occurred while deleting the rating" });
           } else {
@@ -296,15 +296,12 @@ WHERE
                       (err, result) => {
                         if (err) {
                           console.error(err);
-                          res
-                            .status(500)
-                            .json({
-                              error:
-                                "An error occurred while deleting the rating",
-                            });
+                         return res.status(500).json({
+                           error: "An error occurred while deleting the rating",
+                         });
                         } else {
                           if (result.affectedRows > 0) {
-                              res.status(200).json(result);
+                          return res.status(200).json(result);
                           } 
                         }
                       }
@@ -313,7 +310,7 @@ WHERE
 
             } else {
               console.log(result);
-              res.status(404).json({ error: "Rating not found" });
+             return res.status(404).json({ error: "Rating not found" });
             }
           }
         }
@@ -330,9 +327,9 @@ WHERE
         (err, result) => {
           if (err) {
             console.error(err);
-            res
-              .status(500)
-              .json({ error: "An error occurred while deleting the rating" });
+          return res
+            .status(500)
+            .json({ error: "An error occurred while deleting the rating" });
           } else {
             if (result.affectedRows > 0) {
               // res.status(200).json(result);
@@ -343,7 +340,7 @@ WHERE
                   (err, result) => {
                     if (err) {
                       console.error(err);
-                      res.status(500).json({
+                      return res.status(500).json({
                         error: "An error occurred while deleting the rating",
                       });
                     } else {
@@ -354,10 +351,10 @@ WHERE
               }
             } else {
               console.log(result);
-              res.status(404).json({ error: "Rating not found" });
+              return res.status(404).json({ error: "Rating not found" });
             }
           }
-          res.status(200).json({ message: "Rating approved" });
+           return res.status(200).json({ message: "Rating approved" });
         }
       );
     }

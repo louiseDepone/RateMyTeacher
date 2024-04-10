@@ -3,6 +3,7 @@ const router = express.Router();
 const { authenticateToken } = require("../middlewares/authMiddleware");
 
 const pinpostController = require("../controllers/pinpostController");
+console.log("pinpostRoute.js: pinpostController: ");
 
 router.get("/pinposts", authenticateToken, pinpostController.Get.multiplePinpost);
 router.get("/pinposts/:id", authenticateToken, pinpostController.Get.singlePinpost);
