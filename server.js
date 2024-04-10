@@ -9,9 +9,9 @@ const app = express();
 const PORT = 3300;
 const HOST = process.env.HOST;
 
-app.get("/", (req, res) => {
+app.get("/downTimeCheck", (req, res) => {
   console.log("Okay this is the veyr root and onlyfor testing")
- res.send("Hello World");
+ res.status(200).send("Hello World");
 })
 const enrollmentRoute = require("./routes/enrollmentRoute");
 const ratingRoute = require("./routes/ratingRoute");
