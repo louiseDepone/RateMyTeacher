@@ -25,8 +25,11 @@ const studentController = {
       const query = `SELECT * FROM students WHERE student_id = ?`;
       db.query(query, [student_id], (err, result) => {
         if (err) {
-          console.log(err);
-          res.status(500).json({ message: "Server Error" });
+         
+           return res.status(500).json({
+            message: "Internal Server Error",
+            err
+          });
         } else {
           if (result.length > 0) {
             res.status(200).json(result[0]);
@@ -40,8 +43,11 @@ const studentController = {
       const query = `SELECT * FROM students`;
       db.query(query, (err, result) => {
         if (err) {
-          console.log(err);
-          res.status(500).json({ message: "Server Error" });
+         
+           return res.status(500).json({
+            message: "Internal Server Error",
+            err
+          });
         } else {
           res.status(200).json(result);
         }
@@ -60,8 +66,11 @@ const studentController = {
         [name, email, hashedPassword, role, student_id],
         (err, result) => {
           if (err) {
-            console.log(err);
-            res.status(500).json({ message: "Server Error" });
+           
+             return res.status(500).json({
+            message: "Internal Server Error",
+            err
+          });
           } else {
             if (result.affectedRows > 0) {
               res.status(200).json({ message: "Student Updated" });
@@ -79,29 +88,71 @@ const studentController = {
   Post: {
     async singleStudent(req, res) {},
     registerStudent(req, res) {
-      const role = "student";
-      const { name, email, password, student_id } = req.body;
+      let continueRegister = false;
+      let { name, email, password, student_id, role } = req.body;
+    
       const hashedPassword = bcrypt.hashSync(password, 10);
-      const query = `INSERT INTO students (name, email, password, role, student_id) VALUES (?, ?, ?, ?, ?)`;
-      db.query(
-        query,
-        [name, email, hashedPassword, role, student_id],
-        (err, result) => {
-          if (err) {
-            console.log(err);
-            res
-              .status(401)
-              .json({
-                message:
-                  err.code === "ER_DUP_ENTRY"
-                    ? "Email Already Exists"
-                    : "Server Error",
-              });
-          } else {
-            res.status(201).json({ message: "Student Registered" });
-          }
+
+         const querys = `SELECT * FROM students WHERE email = ? `;
+
+         db.query(querys, [email], (err, result) => {
+           if (err) {
+             return res.status(500).json({
+               message: "Internal Server Error",
+               err,
+             });
+           } else {
+             if (result.length > 0) {
+               continueRegister = false;
+               return res.status(409).json({ message: "Student Email Already in user" });
+             } else {
+                continueRegister = true;
+             }
+           }
+         });
+
+         const queryss = `SELECT * FROM students WHERE student_id = ? `;
+
+         db.query(queryss, [student_id], (err, result) => {
+           if (err) {
+             return res.status(500).json({
+               message: "Internal Server Error",
+               err,
+             });
+           } else {
+             if (result.length > 0) {
+               continueRegister = false;
+               return res
+                 .status(409)
+                 .json({ message: "Student ID Already in user" });
+             } else {
+                continueRegister = true;
+             }
+           }
+         });
+
+      if (continueRegister) { 
+        console.log(continueRegister)
+        const query = `INSERT INTO students (name, email, password, role, student_id) VALUES (?, ?, ?, ?, ?)`;
+        if (!role) {
+          role = "student";
         }
-      );
+        db.query(
+          query,
+          [name, email, hashedPassword, role, student_id],
+          (err, result) => {
+            if (err) {
+              return res.status(500).json({
+                message: "Internal Server Error",
+                err,
+              });
+            } else {
+              res.status(201).json({ message: "Student Registered" });
+            }
+          }
+        );
+      }
+      
     },
     async multipleStudent(req, res) {},
     async loginStudent(req, res) {
@@ -109,7 +160,10 @@ const studentController = {
       const query = `SELECT * FROM students WHERE email = ?`;
       db.query(query, [email], (err, result) => {
         if (err) {
-          res.status(500).json({ message: "Server Error" });
+           return res.status(500).json({
+            message: "Internal Server Error",
+            err
+          });
         } else {
           if (result.length === 0) {
             res.status(401).json({ message: "Invalid Credentials" });
@@ -151,8 +205,11 @@ const studentController = {
       const query = `UPDATE students SET deleted = true WHERE student_id = ?`;
       db.query(query, [student_id], (err, result) => {
         if (err) {
-          console.log(err);
-          res.status(500).json({ message: "Server Error" });
+         
+           return res.status(500).json({
+            message: "Internal Server Error",
+            err
+          });
         } else {
           if (result.affectedRows > 0) {
             res.status(200).json({ message: "Student Deleted" });

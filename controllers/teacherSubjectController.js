@@ -48,9 +48,9 @@ WHERE
   students.student_id = ?`;
       db.query(query, [id], (err, result) => {
         if (err) {
-          console.log(err);
           return res.status(500).json({
             message: "Internal Server Error",
+            err
           });
         }
         res.status(200).json(result);
@@ -70,7 +70,6 @@ JOIN teachers t ON ts.teacher_id = t.teacher_id
 JOIN subjects s ON ts.subject_id = s.subject_id`;
       db.query(query, (err, result) => {
         if (err) {
-          console.log(err);
           return res.status(500).json({
             message: "Internal Server Error",
           });
@@ -97,7 +96,6 @@ JOIN subjects s ON ts.subject_id = s.subject_id`;
         INNER JOIN subjects ON teacher_subjects.subject_id = subjects.subject_id`;
       db.query(query, (err, result) => {
         if (err) {
-          console.log(err);
           return res.status(500).json({
             message: "Internal Server Error",
           });

@@ -16,8 +16,11 @@ const subjectController = {
       const id = req.params.id;
       db.query("SELECT * FROM subjects WHERE subject_id = ?", [subject_id], (err, result) => {
         if (err) {
-          res.status(500).send(err);
-          console.log(err)
+         
+          return res.status(500).json({
+            message: "Internal Server Error",
+            err
+          });
         } else {
           res.status(200).send(result);
         }
@@ -27,7 +30,11 @@ const subjectController = {
     multipleSubject(req, res) {
       db.query("SELECT * FROM subjects", (err, result) => {
         if (err) {
-          res.status(500).send(err);
+         
+          return res.status(500).json({
+            message: "Internal Server Error",
+            err
+          });
         }
         res.status(200).send(result);
       }
@@ -48,7 +55,11 @@ WHERE s.student_id = ?
         [id],
         (err, result) => {
           if (err) {
-            res.status(500).send(err);
+           
+          return res.status(500).json({
+            message: "Internal Server Error",
+            err
+          });
           }
           res.status(200).send(result);
         }
@@ -64,7 +75,11 @@ WHERE s.student_id = ?
       const { subject } = req.body;
       db.query("UPDATE subjects SET subject = ? WHERE subject_id = ?", [subject, subject_id], (err, result) => {
         if (err) {
-          res.status(500).send(err);
+         
+          return res.status(500).json({
+            message: "Internal Server Error",
+            err
+          });
         } else {
           res.status(200).send(result);
         }
@@ -81,7 +96,11 @@ WHERE s.student_id = ?
         
         db.query("INSERT INTO subjects (subject) VALUES (?)", [subject], (err, result) => {
           if (err) {
-            res.status(500).send(err);
+           
+          return res.status(500).json({
+            message: "Internal Server Error",
+            err
+          });
           }
           res.status(201).send(result);
         }
@@ -99,7 +118,11 @@ WHERE s.student_id = ?
       const subject_id = req.params.subject_id;
       db.query("UPDATE subjects SET deleted = true WHERE subject_id = ?", [subject_id], (err, result) => {
         if (err) {
-          res.status(500).send(err);
+         
+          return res.status(500).json({
+            message: "Internal Server Error",
+            err
+          });
         } else {
           if (result.affectedRows > 0) {
             res.status(200).send(result);

@@ -37,10 +37,10 @@ const pinpostController = {
         SELECT * FROM pinpost WHERE student_id = ? `;
         db.query(query, [id], (err, result) => {
             if (err) {
-            console.log(err);
-            return res.status(500).json({ 
-                message: "Internal Server Error",
-            });
+             return res.status(500).json({
+               message: "Internal Server Error",
+               err,
+             });
             }
             res.status(200).json(result);
         });

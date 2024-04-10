@@ -18,8 +18,9 @@ const enrollmentController = {
       const query = `SELECT * FROM Enrollments WHERE enrollment_id = ? AND deleted = 0;`;
       db.query(query, [enrollment_id], (err, result) => {
         if (err) {
-          return res.status(500).json({
+           return res.status(500).json({
             message: "Internal Server Error",
+            err
           });
         }
         if (result.length === 0) {
@@ -35,8 +36,9 @@ const enrollmentController = {
       const query = `SELECT * FROM Enrollments WHERE deleted = 0;`;
       db.query(query, (err, result) => {
         if (err) {
-          return res.status(500).json({
+           return res.status(500).json({
             message: "Internal Server Error",
+            err
           });
         }
         if (result.length === 0) {
@@ -74,8 +76,9 @@ WHERE
 	`;
       db.query(query, [id], (err, result) => {
         if (err) {
-          return res.status(500).json({
+           return res.status(500).json({
             message: "Internal Server Error",
+            err
           });
         }
         res.status(200).json(result);
@@ -107,8 +110,9 @@ WHERE
 	`;
       db.query(query, [id], (err, result) => {
         if (err) {
-          return res.status(500).json({
+           return res.status(500).json({
             message: "Internal Server Error",
+            err
           });
         }
         res.status(200).json(result);
@@ -123,8 +127,9 @@ WHERE
       const query = `UPDATE Enrollments SET student_id = ?, teacher_subject_id = ?, deleted = ? WHERE enrollment_id = ?;`;
       db.query(query, [student_id, teacher_subject_id, deleted, enrollment_id], (err, result) => {
         if (err) {
-          return res.status(500).json({
+           return res.status(500).json({
             message: "Internal Server Error",
+            err
           });
         }
         res.status(200).json(result);
@@ -137,8 +142,9 @@ WHERE
       const query = `UPDATE Enrollments SET student_id = ?, teacher_subject_id = ?, deleted = ? WHERE enrollment_id = ?;`;
       db.query(query, [student_id, teacher_subject_id, deleted, enrollment_id], (err, result) => {
         if (err) {
-          return res.status(500).json({
+           return res.status(500).json({
             message: "Internal Server Error",
+            err
           });
         }
         res.status(200).json(result);

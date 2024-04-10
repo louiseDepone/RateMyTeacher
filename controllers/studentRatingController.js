@@ -20,8 +20,9 @@ const studentRatingController = {
       const query = `SELECT * FROM Student_Ratings WHERE rating_id = ? AND deleted = 0;`;
       db.query(query, [rating_id], (err, result) => {
         if (err) {
-          return res.status(500).json({
+           return res.status(500).json({
             message: "Internal Server Error",
+            err
           });
         }
         if (result.length === 0) {
@@ -37,8 +38,9 @@ const studentRatingController = {
       const query = `SELECT * FROM Student_Ratings WHERE deleted = 0;`;
       db.query(query, (err, result) => {
         if (err) {
-          return res.status(500).json({
+           return res.status(500).json({
             message: "Internal Server Error",
+            err
           });
         }
         if (result.length === 0) {
@@ -58,8 +60,9 @@ const studentRatingController = {
       const query = `UPDATE Student_Ratings SET student_id = ?, rating_value = ?, comment = ?, date = ?, approved = ?, deleted = ? WHERE rating_id = ?;`;
       db.query(query, [student_id, rating_value, comment, date, approved, deleted, rating_id], (err, result) => {
         if (err) {
-          return res.status(500).json({
+           return res.status(500).json({
             message: "Internal Server Error",
+            err
           });
         }
         res.status(200).json(result);
@@ -75,8 +78,9 @@ const studentRatingController = {
       const query = `INSERT INTO Student_Ratings (student_id, rating_value, comment, date, approved, deleted) VALUES (?, ?, ?, ?, ?, ?);`;
       db.query(query, [student_id, rating_value, comment, date, approved, deleted], (err, result) => {
         if (err) {
-          return res.status(500).json({
+           return res.status(500).json({
             message: "Internal Server Error",
+            err
           });
         }
         res.status(201).json(result);
@@ -91,8 +95,9 @@ const studentRatingController = {
       const query = `UPDATE Student_Ratings SET deleted = true WHERE rating_id = ?;`;
       db.query(query, [rating_id], (err, result) => {
         if (err) {
-          return res.status(500).json({
+           return res.status(500).json({
             message: "Internal Server Error",
+            err
           });
         }
         res.status(200).json(result);
