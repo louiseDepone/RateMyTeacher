@@ -150,57 +150,140 @@ const studentController = {
                 err,
               });
             } else {
-              res.status(201).json({ message: "Student Registered" });
+              return res.status(201).json({ message: "Student Registered" });
             }
           }
         );
-      }
+      } 
+      return;
       
     },
+//     registerStudent(req, res) {
+//   let { name, email, password, student_id, role } = req.body;
+//   let continueRegister = true;
+
+//   if (!name || !email || !password || !student_id) {
+//     return res.status(400).json({ message: "All fields are required" });
+//   }
+
+//   const hashedPassword = bcrypt.hashSync(password, 10);
+
+//   const emailQuery = `SELECT * FROM students WHERE email = ?`;
+//   const studentIdQuery = `SELECT * FROM students WHERE student_id = ?`;
+
+//   const emailPromise = new Promise((resolve, reject) => {
+//     db.query(emailQuery, [email], (err, result) => {
+//       if (err) {
+//         reject(err);
+//       } else {
+//         if (result.length > 0) {
+//           continueRegister = false;
+//           resolve(false);
+//         } else {
+//           resolve(true);
+//         }
+//       }
+//     });
+//   });
+
+//   const studentIdPromise = new Promise((resolve, reject) => {
+//     db.query(studentIdQuery, [student_id], (err, result) => {
+//       if (err) {
+//         reject(err);
+//       } else {
+//         if (result.length > 0) {
+//           continueRegister = false;
+//           resolve(false);
+//         } else {
+//           resolve(true);
+//         }
+//       }
+//     });
+//   });
+
+//   Promise.all([emailPromise, studentIdPromise])
+//     .then(([emailAvailable, studentIdAvailable]) => {
+//       if (emailAvailable && studentIdAvailable) {
+//         const query = `INSERT INTO students (name, email, password, role, student_id) VALUES (?, ?, ?, ?, ?)`;
+//         if (!role) {
+//           role = "student";
+//         }
+//         db.query(
+//           query,
+//           [name, email, hashedPassword, role, student_id],
+//           (err, result) => {
+//             if (err) {
+//               return res.status(500).json({
+//                 message: "Internal Server Error",
+//                 err,
+//               });
+//             } else {
+//               return res.status(201).json({ message: "Student Registered" });
+//             }
+//           }
+//         );
+//       } else {
+//         return res.status(409).json({ message: "Email or Student ID already in use" });
+//       }
+//     })
+//     .catch((err) => {
+//       return res.status(500).json({
+//         message: "Internal Server Error",
+//         err,
+//       });
+//     });
+// },
     async multipleStudent(req, res) {},
     async loginStudent(req, res) {
       const { email, password } = req.body;
 
-      const query = `SELECT * FROM students WHERE email = ?`;
-      db.query(query, [email], (err, result) => {
-        if (err) {
-           return res.status(500).json({
-            message: "Internal Server Error",
-            err
-          });
-        } else {
-          if (result.length === 0) {
-             return res.status(401).json({ message: "Invalid Credentials" });
-          
-          }
-          try {
-            const isPasswordCorrect = bcrypt.compareSync(
-              password,
-              result[0]?.password
-            );
-            if (isPasswordCorrect) {
-              const token = jsonwebtoken.sign(
-                {
-                  id: result[0].student_id,
-                  role: result[0].role,
-                  name: result[0].name,
-                  email: result[0].email,
-                },
-                process.env.JWT_SECRET
-              );
-              console.log("Login Successful");
-          return res.status(200).json({ message: "Login Successful", token });
-            } else {
-              console.log("invaliedd!!!");
-          return res.status(401).json({ message: "Invalid Credentials" });
+      try {
+        const query = `SELECT * FROM students WHERE email = ?`;
+        db.query(query, [email], (err, result) => {
+          if (err) {
+            return res.status(500).json({
+              message: "Internal Server Error",
+              err,
+            });
+          } else {
+            if (result.length === 0) {
+              return res.status(401).json({ message: "Invalid Credentials" });
             }
-          } catch (error) {
-            console.log("isPasswordCorrect");
-            console.log(error);
-           return res.status(401).json({ message: "Invalid Credentials" });
+            try {
+              const isPasswordCorrect = bcrypt.compareSync(
+                password,
+                result[0]?.password
+              );
+              if (isPasswordCorrect) {
+                const token = jsonwebtoken.sign(
+                  {
+                    id: result[0].student_id,
+                    role: result[0].role,
+                    name: result[0].name,
+                    email: result[0].email,
+                  },
+                  process.env.JWT_SECRET
+                );
+                console.log("Login Successful");
+                return res
+                  .status(200)
+                  .json({ message: "Login Successful", token });
+              } else {
+                console.log("invaliedd!!!");
+                return res.status(401).json({ message: "Invalid Credentials" });
+              }
+            } catch (error) {
+              console.log("isPasswordCorrect");
+              console.log(error);
+              return res.status(401).json({ message: "Invalid Credentials" });
+            }
           }
-        }
-      });
+        });
+      } catch (error) {
+        console.log(error)
+      }
+
+      
     },
   },
   Delete: {

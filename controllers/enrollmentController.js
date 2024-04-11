@@ -4,7 +4,7 @@ const { jsonwebtoken } = require("../middlewares/authMiddleware");
 const { decoding } = require("../services/jwt");
 
 
-// Enrollments:
+// enrollments:
 
 // enrollment_id (INT, Primary Key, Auto Increment)
 // student_id (INT, Foreign Key referencing student_id in Students table)
@@ -15,7 +15,7 @@ const enrollmentController = {
   Get: {
     singleEnrollment(req, res) {
       const { enrollment_id } = req.params;
-      const query = `SELECT * FROM Enrollments WHERE enrollment_id = ? AND deleted = 0;`;
+      const query = `SELECT * FROM enrollments WHERE enrollment_id = ? AND deleted = 0;`;
       db.query(query, [enrollment_id], (err, result) => {
         if (err) {
            return res.status(500).json({
@@ -25,7 +25,7 @@ const enrollmentController = {
         }
         if (result.length === 0) {
           return res.status(404).json({
-            message: "Enrollment not found",
+            message: "enrollment not found",
           });
         }
         return res.status(200).json(result);
@@ -33,7 +33,7 @@ const enrollmentController = {
      },
 
     multipleEnrollment(req, res) {
-      const query = `SELECT * FROM Enrollments WHERE deleted = 0;`;
+      const query = `SELECT * FROM enrollments WHERE deleted = 0;`;
       db.query(query, (err, result) => {
         if (err) {
            return res.status(500).json({
@@ -43,7 +43,7 @@ const enrollmentController = {
         }
         if (result.length === 0) {
           return res.status(404).json({
-            message: "Enrollment not found",
+            message: "enrollment not found",
           });
         }
           return res.status(200).json(result);
@@ -118,7 +118,7 @@ WHERE
      return res.status(200).json(result);
       });
     }
-  },
+  }, 
 
   Put: {
     async singleEnrollment(req, res) {
@@ -131,7 +131,7 @@ WHERE
         });
       }
 
-      const query = `UPDATE Enrollments SET student_id = ?, teacher_subject_id = ?, deleted = ? WHERE enrollment_id = ?;`;
+      const query = `UPDATE enrollments SET student_id = ?, teacher_subject_id = ?, deleted = ? WHERE enrollment_id = ?;`;
       db.query(query, [student_id, teacher_subject_id, deleted, enrollment_id], (err, result) => {
         if (err) {
            return res.status(500).json({
@@ -151,7 +151,7 @@ WHERE
           message: "student_id, teacher_subject_id, deleted are required",  
         });
       }
-      const query = `UPDATE Enrollments SET student_id = ?, teacher_subject_id = ?, deleted = ? WHERE enrollment_id = ?;`;
+      const query = `UPDATE enrollments SET student_id = ?, teacher_subject_id = ?, deleted = ? WHERE enrollment_id = ?;`;
       db.query(query, [student_id, teacher_subject_id, deleted, enrollment_id], (err, result) => {
         if (err) {
            return res.status(500).json({
@@ -173,7 +173,7 @@ WHERE
         });
       }
       console.log(req.body);
-      db.query("INSERT INTO Enrollments (student_id, teacher_subject_id) VALUES (?, ?)", [student_id, teacher_subject_id], (err, result) => {
+      db.query("INSERT INTO enrollments (student_id, teacher_subject_id) VALUES (?, ?)", [student_id, teacher_subject_id], (err, result) => {
         if (err) {
            return res.status(500).send(err);
         }
@@ -194,7 +194,7 @@ WHERE
         for (let i = 0; i < student_id.length; i++) {
           console.log("adding") 
           try {
-            db.query("INSERT INTO Enrollments (student_id, teacher_subject_id) VALUES (?, ?)", [student_id[i], teacher_subject_id], (err, result) => {
+            db.query("INSERT INTO enrollments (student_id, teacher_subject_id) VALUES (?, ?)", [student_id[i], teacher_subject_id], (err, result) => {
               if (err) {
                 return res.status(500).send(err);
               }
@@ -216,7 +216,7 @@ WHERE
   Delete: { 
     async singleEnrollment(req, res) {
       const { enrollment_id } = req.params;
-      db.query("UPDATE Enrollments SET deleted = true WHERE enrollment_id = ?", [enrollment_id], (err, result) => {
+      db.query("UPDATE enrollments SET deleted = true WHERE enrollment_id = ?", [enrollment_id], (err, result) => {
         if (err) {
      return res.status(500).send(err); 
         }
@@ -226,7 +226,7 @@ WHERE
 
     async multipleEnrollment(req, res) {
       const { enrollment_id } = req.params;
-      db.query("UPDATE Enrollments SET deleted = true WHERE enrollment_id = ?", [enrollment_id], (err, result) => {
+      db.query("UPDATE enrollments SET deleted = true WHERE enrollment_id = ?", [enrollment_id], (err, result) => {
         if (err) {
           res.status(500).send(err);
         }
@@ -235,7 +235,7 @@ WHERE
     },
     async realDeletion(req, res) {
       const { id } = req.params;
-      db.query("DELETE FROM Enrollments WHERE enrollment_id = ?", [id], (err, result) => {
+      db.query("DELETE FROM enrollments WHERE enrollment_id = ?", [id], (err, result) => {
         if (err) {
        return res.status(500).send(err);
         }
