@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const { db } = require("../configs/database");
 const { jsonwebtoken } = require("../middlewares/authMiddleware");
 const { decoding } = require("../services/jwt");
-
+ 
 // ratings:
 // -- CREATE TABLE ratings (
 // --   rating_id INT PRIMARY KEY AUTO_INCREMENT,

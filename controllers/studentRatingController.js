@@ -2,8 +2,8 @@ const bcrypt = require("bcrypt");
 const { db } = require("../configs/database");
 const { jsonwebtoken } = require("../middlewares/authMiddleware");
 const { decoding } = require("../services/jwt");
-
-// Student_Ratings:
+   
+// Student_Ratings:f
 
 // rating_id (INT, Primary Key, Auto Increment)
 // student_id (INT, Foreign Key referencing student_id in Students table)
